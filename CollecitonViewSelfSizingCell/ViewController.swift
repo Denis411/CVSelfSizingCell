@@ -8,11 +8,18 @@
 import UIKit
 
 class ViewController: UIViewController {
+    let arrayOfTitles = ["one", "two", "three", "a very long title for the cell", "0", "some", "cat", "xcode",
+                         "one", "two", "three", "a very long title for the cell", "0", "some", "cat", "xcode",
+                         "one", "two", "three", "a very long title for the cell", "0", "some", "cat", "xcode",
+                         "one", "two", "three", "a very long title for the cell", "0", "some", "cat", "xcode",
+                         "one", "two", "three", "a very long title for the cell", "0", "some", "cat", "xcode"]
     var collection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
         let collection = UICollectionView(frame: .null, collectionViewLayout: layout)
         collection.backgroundColor = .orange
         collection.register(CVCell.self, forCellWithReuseIdentifier: CVCell.identifier)
+        collection.showsHorizontalScrollIndicator = false
         return collection
     }()
 
@@ -29,7 +36,7 @@ class ViewController: UIViewController {
         
         collection.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         collection.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        collection.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.25).isActive = true
+        collection.heightAnchor.constraint(equalToConstant: 60).isActive = true
         collection.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
@@ -39,15 +46,24 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        50
+        arrayOfTitles.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CVCell.identifier, for: indexPath) as! CVCell
-        cell.backgroundColor = .red
-        cell.setLabel(text: "hi")
+        cell.backgroundColor = .black
+        cell.setLabel(text: arrayOfTitles[indexPath.item])
         return cell 
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let string = arrayOfTitles[indexPath.item]
+        let font = UIFont.systemFont(ofSize: 20)
+        
+        let width = string.size(withAttributes: [NSAttributedString.Key.font: font]).width
+        
+        return CGSize(width: width, height: 50)
     }
 }

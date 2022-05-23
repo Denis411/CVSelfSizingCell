@@ -15,6 +15,8 @@ class CVCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.layer.cornerRadius = 5
+        label.font = UIFont.systemFont(ofSize: 20)
         setUpLabelConstratins()
     }
     
