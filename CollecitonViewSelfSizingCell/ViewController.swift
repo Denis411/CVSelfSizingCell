@@ -12,6 +12,7 @@ class ViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         let collection = UICollectionView(frame: .null, collectionViewLayout: layout)
         collection.backgroundColor = .orange
+        collection.register(CVCell.self, forCellWithReuseIdentifier: CVCell.identifier)
         return collection
     }()
 
@@ -19,6 +20,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .blue
         setUpCollectionConstraints()
+        setUPCollectionView()
     }
     
     private func setUpCollectionConstraints() {
@@ -30,5 +32,22 @@ class ViewController: UIViewController {
         collection.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.25).isActive = true
         collection.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
+    
+    private func setUPCollectionView() {
+        collection.delegate = self
+        collection.dataSource = self
+    }
 }
 
+extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        50
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CVCell.identifier, for: indexPath) as! CVCell
+        cell.backgroundColor = .red
+        cell.setLabel(text: "hi")
+        return cell 
+    }
+}
